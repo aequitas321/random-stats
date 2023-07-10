@@ -1,3 +1,3 @@
-<div>
-  {{ allTeams | async }}
+<div *ngFor="let team of allTeams$ | async">
+  <p>{{ team.name }}</p>
 </div>

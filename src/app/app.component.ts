@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BallDontLieService } from './core/services/ball-dont-lie.service';
+import { ITeam } from './core/models/ITeam';
+import { Observable, map, of, pipe, tap } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +10,7 @@ import { BallDontLieService } from './core/services/ball-dont-lie.service';
 })
 export class AppComponent implements OnInit {
   title = 'random-stats';
-  allTeams: any;
+  allTeams$: Observable<ITeam[]> = of([]);
 
   constructor(
     private ballDontLieService: BallDontLieService
@@ -16,7 +18,6 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.allTeams = this.ballDontLieService.getAllNBATeams();
-    console.log("allTeams", this.allTeams)
+    this.allTeams$ = this.ballDontLieService.getAllNBATeams();
   }
 }
