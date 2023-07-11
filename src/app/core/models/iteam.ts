@@ -3,6 +3,6 @@ export interface ITeam{
     city: string,
     conference: string,
     division: string,
-    fullName: string,
+    full_name: string,
     name: string
 }
