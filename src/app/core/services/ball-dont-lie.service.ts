@@ -1,26 +1,33 @@
-import { HttpClient, HttpParamsOptions } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, switchMap, catchError, throwError, filter, map, of } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
+import { ITeam } from '../models/ITeam';
+import { IApiWrapper } from '../models/iapiWrapper';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BallDontLieService {
-  ballDontLieUrl: string = 'https://balldontlie.io';
+  ballDontLieUrl: string = 'https://www.balldontlie.io';
 
   constructor(
     private httpService: HttpClient
   ) { }
 
-  // TODO: Make a Model for an NBA team to type this properly:
-  getAllNBATeams(): Observable<any> {
-    return this.httpService.get(`${this.ballDontLieUrl}/api/v1/teams`).pipe(
-      catchError((err: any) => {
-        console.log(err);
-        return throwError('Error in BallDontLieService GET All Teams method');
-    })
-    )
+  getAllNBATeams(): Observable<ITeam[]> {
+    return this.httpService.get<IApiWrapper<ITeam[]>>(`${this.ballDontLieUrl}/api/v1/teams`)
+    .pipe(
+      map((response) => {
+        return <ITeam[]>response.data;
+      }),
+      catchError(this.handleError('getAllNBATeams', [])));
   }
-  // TODO: Fix CORS errors
+
+  private handleError<T>(operation = 'operation', result?:T){
+    return (error: any): Observable<T> => {
+      console.error(error);
+      return of(result as T);
+    }
+  }
 
 }
