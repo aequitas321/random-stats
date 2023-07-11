@@ -1,5 +1,6 @@
-import { ITeam } from "../nba/iteam";
+import { IMeta } from "../nba/imeta";
 
 export interface IApiWrapper<T> {
-    data: T;
+    data: T,
+    meta?: IMeta 
 }
